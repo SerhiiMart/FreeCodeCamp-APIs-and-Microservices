@@ -1,15 +1,20 @@
 {
-	"name": "fcc-learn-npm-package-json",
-	"author": "Serhii Martyniuk",
-	"dependencies": {
-		"express": "^4.14.0"
-	},
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://idontknow/todo.git"
-	}
+  "name": "fcc-learn-npm-package-json",
+  "author": "Serhii Martyniuk",
+  "description": "A project that does something awesome",
+  "keywords": [ "javascript", "npm", "freecodecamp" ],
+  "license": "MIT",
+  "version": "1.1.0",
+  "dependencies": {
+		"moment" :  "^2.10.2",
+    "express": "^4.14.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://idontknow/todo.git"
+  }
 }
