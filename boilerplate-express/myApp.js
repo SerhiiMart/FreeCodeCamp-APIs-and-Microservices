@@ -73,4 +73,5 @@ app.get('/name', (req, res) => {
 });
 
 //// №11
+app.use(bodyParser.urlencoded({ extended: false}));
 
