@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-
+var bodyParser = require('body-parser'); //// from №10
 //// №2
 //  app.get("/", (req, res) => {
 //   res.send('Hello Express');
@@ -71,4 +71,6 @@ app.get('/name', (req, res) => {
   let { first: firstName, last: lastName } = req.query;
  res.json({name: `${firstName} ${lastName}`});
 });
+
+//// №11
 
