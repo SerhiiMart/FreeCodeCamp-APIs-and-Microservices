@@ -75,3 +75,10 @@ app.get('/name', (req, res) => {
 //// №11
 app.use(bodyParser.urlencoded({ extended: false}));
 
+//// №12
+app.post('/name', (req, res) => {
+  let data = req.body.first + " " + req.body.last;
+  res.json({ name: data });
+});
+
+
