@@ -56,6 +56,7 @@ const findPersonById = (personId, done) => {
 });
 };
 
+//eight
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
   Person.findById(personId, (err, result) => {
@@ -71,15 +72,22 @@ const findEditThenSave = (personId, done) => {
   // done(null /*, data*/);
 };
 
+////nineth
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name : personName}, {age : ageToSet}, { new: true }, (err, updatedRecord) => {
+    (err) ? console.log(err) : done(null, updatedRecord);
+  })
+  //done(null /*, data*/);
 };
 
+///tenth
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove(personId, (err, data) =>{
+    (err) ? console.log(err) : done(null, data);
+  });
 };
+
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
