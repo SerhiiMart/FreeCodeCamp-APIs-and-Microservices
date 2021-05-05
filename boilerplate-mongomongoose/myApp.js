@@ -88,17 +88,25 @@ const removeById = (personId, done) => {
   });
 };
 
-
+//eleventh
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
 
-  done(null /*, data*/);
+  Person.remove({name : nameToRemove }, (err, data) => {
+    (err) ? console.log(err) : done(null, data);
+  })
 };
 
+//finished tvelve
 const queryChain = (done) => {
   const foodToSearch = "burrito";
-
-  done(null /*, data*/);
+  Person.find({favoriteFoods : {$all : foodToSearch}})
+  .sort({name : 'asc'}) //way to sorting by name
+  .limit(2)
+  .select('-age')
+  .exec((err, filterData) =>{
+    (err) ? console.log(err) : done(null, filterData);
+  });
 };
 
 /** **Well Done !!**
