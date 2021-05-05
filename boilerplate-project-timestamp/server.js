@@ -39,16 +39,11 @@ app.get("/api/timestamp/", (req, res) => {
 app.get("/api/timestamp/:date_string", (req, res) => {
   let dateStr = req.params.date_string;
   if (/\d{5,}/.test(dateStr)) {
-    const dateInt = parseInt(dateStr);
+    let dateInt = parseInt(dateStr);
     res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
   } else {
     let dateObj = new Date(dateStr);
-
-    let dateObj = new Date(dateStr);
-      if (dateObj.toString() === "Invalid Date") {
-      res.json({ error: "Invalid Date" });
-      } else {
-      res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
-      }
+    (dateObj.toString() === "Invalid Date") ? res.json({ error: "Invalid Date" }) : 
+    res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
   }
 });
