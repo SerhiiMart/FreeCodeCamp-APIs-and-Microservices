@@ -47,10 +47,10 @@ let resObj = {}
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }) , (req, res) => {
   let inputUrl = req.body['url']
   
-  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
+  let urlRegex = new RegExp(/^(http|https)(:\/\/)/)
   
   if(!inputUrl.match(urlRegex)){
-    res.json({error: 'invalid url'})
+    res.json({ error: "invalid url" })
     return
   }
     
@@ -86,6 +86,6 @@ app.get('/api/shorturl/:input', (req, res) => {
   
   Url.findOne({short: input}, (error, result) => {
     (!error && result != undefined) ? res.redirect(result.original) :
-      res.json('invalid url');
+      res.json( ' invalid url ');
   })
 })
