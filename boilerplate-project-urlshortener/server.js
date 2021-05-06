@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const uri = process.env.DB_URI;
+const uri = process.env.MONGO_URI;
 const mongoose = require('mongoose');
 
 // Basic Configuration
@@ -43,13 +43,14 @@ const urlSchema = new mongoose.Schema({
 let Url = mongoose.model('Url', urlSchema)
 
 let bodyParser = require('body-parser');
+let resObj = {}
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }) , (req, res) => {
   let inputUrl = req.body['url']
-  let resObj = {}
+  
   let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
   
   if(!inputUrl.match(urlRegex)){
-    res.json({error: 'Invalid URL'})
+    res.json({error: 'invalid url'})
     return
   }
     
@@ -81,7 +82,7 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }) , (req, res
 })
 
 app.get('/api/shorturl/:input', (req, res) => {
-  let input = req.params.input
+  let input = req.params.input;
   
   Url.findOne({short: input}, (error, result) => {
     (!error && result != undefined) ? res.redirect(result.original) :
