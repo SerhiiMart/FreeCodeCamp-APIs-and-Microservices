@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
+const uri = process.env.MONGO_URI;
+const mongoose = require('mongoose');
 
 app.use(cors())
 app.use(express.static('public'))
