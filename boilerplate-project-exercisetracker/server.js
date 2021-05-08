@@ -1,45 +1,44 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-require('dotenv').config()
-const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: false }))
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+require('dotenv').config();
+const { Schema } = mongoose;
 const uri = process.env["MONGO_URI"];
-const mongoose = require('mongoose');
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000 }, (error) => {
   if (error) console.log(error);
   console.log("Connection to the Database is successful");
 });
 
+////Working on exers
 
+const DDDSchema = new Schema({
+description: {type:String, required: true},
+duration: {type:Number, required: true},
+date: Date
+});
+
+const userSchema = new Schema({
+  username: {type: String, required: true, unique: true},
+  log: [DDDSchema]
+});
+const Log = mongoose.model("Log", DDDSchema);
+const User = mongoose.model("User", userSchema);
+
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
-////Working on exers
-
-let DDDSchema = new mongoose.Schema({
-  description: {type : String, required: true},
-  duration: {type : Number, required: true},
-  date: String
-})
-
-let userSchema = new mongoose.Schema({
-  username: {type: String, required: true, unique: true},
-  log: [DDDSchema]
-})
-
-let Log = mongoose.model("Log", DDDSchema);
-let User = mongoose.model("User", userSchema);
-
 app.post("/api/users", (req, res) => {
   const { username } = req.body;
 
    User.findOne({ username }, (err, found)=>{
     if(err) return res.send(err);
-    if(found) res.send("Username already taken");
+    if(found) res.send("Username was taken");
     else {
       const newUser = new User({ username });
 
@@ -94,7 +93,6 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   });
 });
 
-
 app.get("/api/users/:_id/logs", (req, res) => {
   const { _id } = req.params;
   let { from, to, limit } = req.query;
@@ -105,7 +103,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     if(from || to){
       to = (to === undefined) ? to : new Date(to);
       from = (from === undefined) ? from : new Date(from);
-      user.log = user.log.filter(i => to ? i.date <= to : true && from ? i.date >= from : true);
+      user.log = user.log.filter(e => to ? e.date <= to : true && from ? e.date >= from : true);
     }
 
     if(limit){
@@ -118,17 +116,16 @@ app.get("/api/users/:_id/logs", (req, res) => {
       from: from ? from.toDateString() : from,
       to: to ? to.toDateString() : to,
       count: user.log.length,
-      log: user.log.map(i => {
+      log: user.log.map(e => {
         return {
-          description: i.description,
-          duration: i.duration,
-          date: i.date.toDateString()
+          description: e.description,
+          duration: e.duration,
+          date: e.date.toDateString()
         }
       })
     })
   });
 });
-
 
 
 ////Listener
