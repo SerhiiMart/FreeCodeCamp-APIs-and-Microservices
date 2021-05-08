@@ -3,7 +3,8 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 const bodyParser = require('body-parser')
-const uri = process.env.MONGO_URI;
+app.use(bodyParser.urlencoded({ extended: false }))
+const uri = process.env["MONGO_URI"];
 const mongoose = require('mongoose');
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000 }, (error) => {
   if (error) console.log(error);
