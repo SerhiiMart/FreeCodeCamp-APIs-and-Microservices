@@ -5,7 +5,7 @@ require('dotenv').config()
 const uri = process.env.MONGO_URI;
 const mongoose = require('mongoose');
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
+const bodyParser = require('body-parser');
 
 app.use(cors())
 app.use(express.static('public'))
@@ -18,7 +18,7 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 })
 
 let exerciseTrackerSchema = new mongoose.Schema({
-  description: {type : String, required: true},
+  description: {type : String, required: true,  unique: true,},
   duration: {type : Number, required: true},
   date: String
 })
@@ -30,3 +30,15 @@ let userSchema = new mongoose.Schema({
 
 let Session = mongoose.model("Session", exerciseTrackerSchema);
 let User = mongoose.model("User", userSchema);
+
+app.post('/api/users', bodyParser.urlencoded({ extended: false }), (req, res) => {
+  let newUser = new User({username: req.body.username})
+  newUser.save((error, savedUser) => {
+    if(!error){
+      let resObj = {}
+      resObj['username'] = savedUser.username
+      resObj['_id'] = savedUser.id
+      res.json(resObj)
+    }
+  })
+})
